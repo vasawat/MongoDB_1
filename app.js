@@ -10,6 +10,8 @@ var logger = require('morgan');
 var bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const encrypt = require('mongoose-encryption');
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 
 

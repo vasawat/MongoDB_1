@@ -3,7 +3,8 @@ var router = express.Router();
 const mongoose = require('mongoose');
 const user = require('../models/user');
 const bodyparser = require('body-parser');
-
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 
 /* GET users listing. */
@@ -22,22 +23,29 @@ router.post('/login', function(req, res, next) {
     console.log(inputusername);
     console.log(inputpassword);
       if (checkuser) {
-        if (checkuser.password === inputpassword) {
-          res.redirect('/secrets');
-        }
+        bcrypt.compare(inputpassword, checkuser.password, function(err, result) {
+          if (result === true) {
+            res.redirect('/secrets');
+          }
+        });
       }
   })
 });
 
 
 router.post('/register', function(req, res, next){
-  user.create(
+
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+      user.create(
     {username: req.body.username,
-     password: req.body.password})
+     password: hash})
      .then(function(user){
       res.json(user);
-  })
+    })
+  });
 });
+
+
 
 
 

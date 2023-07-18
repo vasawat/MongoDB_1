@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const encrypt = require('mongoose-encryption');
 
 
+
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
